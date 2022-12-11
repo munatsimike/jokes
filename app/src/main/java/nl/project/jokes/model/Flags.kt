@@ -1,5 +1,6 @@
 package nl.project.jokes.model
 
+@kotlinx.serialization.Serializable
 data class Flags(
     val explicit: Boolean,
     val nsfw: Boolean,

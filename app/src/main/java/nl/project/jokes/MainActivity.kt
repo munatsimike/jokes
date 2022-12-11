@@ -52,7 +52,7 @@ fun Jokes(jokesViewModel: JokeViewModel = hiltViewModel()) {
             is NetworkState.NetworkError -> {}
             is NetworkState.NetworkSuccess -> {
                 val data = jokes as NetworkState.NetworkSuccess
-                items(data.data) { joke ->
+                items(data.jokes) { joke ->
                     joke.joke?.let {
                         Text(text = it)
                     } ?: joke.delivery?.let {

@@ -1,11 +1,14 @@
 package nl.project.jokes.data
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import nl.project.jokes.data.local.JokeDao
 import nl.project.jokes.data.remote.JokeService
-import nl.project.jokes.model.JokeApiResponse
 import javax.inject.Inject
 
-class JokeRepository @Inject constructor(var jokeService: JokeService) {
-    suspend fun getJokes(): Flow<JokeApiResponse> = flowOf(jokeService.getJokes())
+class JokeRepository @Inject constructor(
+    private val jokeService: JokeService, private val jokeDao: JokeDao
+) {
+    val joke = jokeDao.getJokes()
+    suspend fun fetchJokes() {
+        jokeDao.insertJokes(jokeService.getJokes().jokes)
+    }
 }

@@ -6,5 +6,5 @@ sealed class NetworkState {
     object NotLoading : NetworkState()
     object Loading : NetworkState()
     class NetworkError(val error: String) : NetworkState()
-    class NetworkSuccess(val data: List<Joke>) : NetworkState()
+    class NetworkSuccess(val jokes: List<Joke>) : NetworkState()
 }

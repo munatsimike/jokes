@@ -3,7 +3,6 @@ package nl.project.jokes.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -21,14 +20,18 @@ class JokeViewModel @Inject constructor(
     val jokes: StateFlow<NetworkState> = _jokes
 
     init {
-        getJokes()
+        viewModelScope.launch {
+            jokeRepository.fetchJokes()
+            collectJokes()
+
+        }
     }
 
-    private fun getJokes() {
+    private fun collectJokes() {
         _jokes.value = NetworkState.Loading
         viewModelScope.launch {
-            jokeRepository.getJokes().collectLatest {
-                _jokes.value = NetworkState.NetworkSuccess(it.jokes)
+            jokeRepository.joke.collectLatest {
+                _jokes.value = NetworkState.NetworkSuccess(it)
             }
         }
     }
